@@ -13,6 +13,7 @@ import numpy as np
 import tensorflow.contrib.layers as tl
 import odl
 from odl.discr import Gradient
+from odl.deform.linearized import _linear_deform
 
 
 """ 
@@ -21,7 +22,19 @@ infinitesimal action
 
 """
 
-def infinitesimal_action(v, I):
+def infinitesimal_action_withgrad(v, I):
     grad_op = Gradient(I.space)
     grad = grad_op(I)
-    return -sum(grad * grad)
+    return -sum(v * grad)
+
+
+def infinitesimal_action(v, I):
+    step = 0.1
+    I_tmp=I.space.element(_linear_deform(I, -step* v).copy())
+    return (1/step) * (I_tmp - I)
+
+
+
+        
+
+

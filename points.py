@@ -31,5 +31,6 @@ infinitesimal action
 
 def infinitesimal_action(v, GD):
     GD = np.array(GD)
+    shape = GD.shape
     speed = [im.interpolation(np.transpose(GD)) for im in v]
-    return np.transpose(speed)
+    return np.transpose(speed).reshape(shape)
