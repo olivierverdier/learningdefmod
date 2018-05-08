@@ -59,14 +59,14 @@ control_trajectory = [np.array([[0], [5]]) for i in range(nb_int)]
 def add_GD(GD0, GD1):
     return GD0 + GD1
 
-#GD_list = integration_op(GD_init, infinitesimal_action,
-#                             field_op, control_trajectory)
+GD_list = integration_op(GD_init, infinitesimal_action,
+                             field_op, control_trajectory, add_GD)
 
 #%%
 GD_list, image_list = fun_generate_data.generate_data_fromgd(GD_init, infinitesimal_action,
                              field_op, control_trajectory, data_op,
                              integration_op, add_GD)
-
+ 
 #GD_list = fun_generate_data.generate_data_fromaction(GD_init, infinitesimal_action,
 #                             field_op, control_trajectory, add_GD, GD_init,
 #                             infinitesimal_action, add_GD,
@@ -78,22 +78,22 @@ if False:
         image_list[i].show(str(i))
 
 
-##%% Problem with infinitesimal action by gradient
-#def smooth(y, box_pts):
-#    box = np.ones(box_pts)/box_pts
-#    y_smooth = np.convolve(y, box, mode='same')
-#    return y_smooth
-#
-#image_list = []
-#image_list.append(template)
-#field_list = []
-#for i in range(nb_int):
-#    field = field_op(GD_list[i], control_trajectory[i])
-#    #field_list.append(field.copy())
-#    #field.show(str(i))
-#    image_list.append(space.element(smooth(image_list[i] + step  * image.infinitesimal_action_withgrad(field, image_list[i]), 250)))
-##%%
-#
-#for i in range(nb_int+1):
-#    field_list[i].show('field' + str(i))
-#    image_list[i].show(str(i))
+#%% Problem with infinitesimal action by gradient
+def smooth(y, box_pts):
+    box = np.ones(box_pts)/box_pts
+    y_smooth = np.convolve(y, box, mode='same')
+    return y_smooth
+
+image_list = []
+image_list.append(template)
+field_list = []
+for i in range(nb_int):
+    field = field_op(GD_list[i], control_trajectory[i])
+    field_list.append(field.copy())
+    #field.show(str(i))
+    image_list.append(space.element(image_list[i] + step  * image.infinitesimal_action(field, image_list[i])))
+#%%
+
+for i in range(nb_int+1):
+    #field_list[i].show('field' + str(i))
+    image_list[i].show(str(i))

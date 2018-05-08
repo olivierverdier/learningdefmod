@@ -29,7 +29,7 @@ def integration_op(nb_int, step):
                                a geometrical descriptor GD and returns the 
                                application of the vector field to GD 
        field_generator : operators that takes in input a 
-                               geometrical descriptor GD and a conrol and 
+                               geometrical descriptor GD and a control and 
                                returns a vector field
        controlstrajectory : temporal list of nb_int controls
        add_GD : functions that takes ininput two GD and returns one GD
