@@ -172,17 +172,22 @@ def create_structured(points, vectors):
 
 v_j = tf.Variable(np.ones([1, nb_points]), name="v_j")
 
-GD_init = tf.Variable(np.ones([nb_points, d]), name="GD_init")
 structured_list_computed = create_structured(points, v_j)
 
 cov_mat = make_covariance_matrix(points, GD)
 speed = tf.matmul(cov_mat, tf.transpose(v_j))
 
 # integration
-GD_list = tf.zeros([N,P,1])
+GD_init = tf.Variable(np.ones([P, d]), name="GD_init")
+shape = tf.constant([N,P])
+GD_list = tf.zeros(shape, dtype='float64')
+indices = tf.constant([[0]])
+GD_list += tf.scatter_nd(indices, tf.transpose(GD_init), shape)
+
+tf.while_loop(i<N, i+=1)
 
 
-#%% test
+#%% launch
 
 session = tf.InteractiveSession()
 session.run(tf.global_variables_initializer())
@@ -192,6 +197,6 @@ alpha = alpha_init.copy()
 
 structured_list_computed.eval(feed_dict={v_j: alpha_init})
 
-GD_list = tf.Em
-GD_list.eval(feed_dict={GD_list: GD})
+
+GD_list.eval(feed_dict={GD_init: GD})
 
